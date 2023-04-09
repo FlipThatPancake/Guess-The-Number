@@ -1,0 +1,61 @@
+import art
+from game_data import data
+import random
+
+print(art.logo)
+
+used_entries = []
+current_score = 0
+
+
+def pull_item_from_data():
+    ran_entry = random.randint(0, len(data) - 1)
+    if len(used_entries) == len(data):
+        return None
+    elif ran_entry not in used_entries:
+        used_entries.append(ran_entry)
+        entry = data[ran_entry]
+        return entry
+    else:
+        return pull_item_from_data()
+        
+
+def format_display_items(a, b):
+    print(f"Compare A: {a['name']}, {a['description']}, {a['country']}.")
+    print(art.vs)
+    print(f"Compare B: {b['name']}, {b['description']}, {b['country']}.")
+
+    
+def compare_items(object_a, object_b, player_choice):
+    object_a = object_a
+    object_b = object_b
+    if player_choice == "A":
+        non_player_selected_object = object_b
+        player_selected_object = object_a
+    elif player_choice == "B":
+        non_player_selected_object = object_a
+        player_selected_object = object_b
+    if player_selected_object['follower_count'] > non_player_selected_object['follower_count']:
+        global current_score
+        current_score += 1
+        print(f"You're right. Current score: {current_score}")
+    else:
+        print(f"Sorry, that's wrong. Final score: {current_score}")
+
+# ------------------------EXECUTION---------------------------- #
+
+new_object = pull_item_from_data()
+while True:
+    
+    new_object = pull_item_from_data()
+    a = data[used_entries[-2]]
+    b = data[used_entries[-1]]
+    
+    format_display_items(a=a, b=b)
+    
+    print("\n")
+    player_choice = input("Who has more followers? Type A or B: ")
+    
+    compare_items(object_a=a, object_b=b, player_choice=player_choice)
+    
+    
